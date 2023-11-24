@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <form>
+                <div class="shadow p-5 mb-5  rounded mt-5 mx-5 text-center bg-info">
+                    <input type="text" class="form-control" id="input_country">
+                    <button type="button" class="btn btn-outline-danger btn-rounded mt-4" data-mdb-ripple-init
+                        data-mdb-ripple-color="dark" onclick="countryDetails()">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <div class="container">
+        <div id="results" class="d-flex justify-content-around"></div>
+    </div>
+
+</body>
+<script>
+    function countryDetails() {
+        let input_country = document.getElementById('input_country').value
+        fetch(`https://restcountries.com/v3.1/name/${input_country}?fullText=true`)//by default get method
+            .then(data => data.json())//object->array of data
+            .then(data => countryDisplay(data))
+            .catch(error => alert("Enter a valid Country name"));
+        function countryDisplay(data) {
+            for (country of data) {
+                console.log(country);
+                htmlData = `
+                          <div class="card p-3 text-center shadow-lg p-3 mb-5 bg-white rounded m-5"" style="width: 18rem;">
+                          <img class="card-img-top" src="${country.flags.png}" alt="Card image cap">
+                         <div class="card-body">
+                          <h5 class="card-title">${country.name.common}</h5>
+                          <p class="card-text">${country.flags.alt}</p>
+                         </div>
+                         </div>
+                        </div>
+                        <div class="card p-3 text-center shadow-lg p-3 mb-5 bg-white rounded m-5"" style="width: 18rem;">
+                          <img class="card-img-top" src="${country.coatOfArms.svg}" alt="Card image cap">
+                         </div>
+                        </div>`
+                results.innerHTML = htmlData;
+            }
+        }
+    }
+</script>
+
+</html>
